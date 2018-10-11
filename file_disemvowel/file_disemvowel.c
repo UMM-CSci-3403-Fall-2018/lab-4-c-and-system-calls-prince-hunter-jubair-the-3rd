@@ -40,9 +40,9 @@ bool is_vowel(char c) {
          return true;
         }
        else {
-	 return false
+	 return false;
 	}
-}
+
 
 int copy_non_vowels(int num_chars, char* in_buf, char* out_buf) {
     /*
@@ -70,18 +70,42 @@ void disemvowel(FILE* inputFile, FILE* outputFile) {
      * in a buffer of data, copy the non-vowels to the output buffer, and
      * use fwrite to write that out. 
      */
+	int i, j = 0;
+	opInputFile = fopen("inputFile","r+")
+	outputFile = (inputFile*) malloc(fopen("outputFile","r+"), sizeof(inputfile));
+	for (i = 0; str[i]; i++) {
+		if (is_vowel(opInputFile) == false) {
+			outputFile[j++] = char c
+
+
 }
 
 int main(int argc, char *argv[]) { 
     FILE *inputFile; 
     FILE *outputFile;
+	switch (argc) {
 
     // Code that processes the command line arguments 
     // and sets up inputFile and outputFile.
-    opInputFile = FILE fopen(const char *inputfile, const char "r");
-    opOutputFile = FILE fopen(const char *outputfile, const char "w");
+
+    //1st case if the files don't have anything.
+	case 1:
+   	 inputFile = stdin;
+   	 outputFile = stdout;
+	break;
+    //2nd case if the 
+	case 2:
+	inputFile = fopen("inputfile","r");
+	outputFile = stdout;
+	break;
+	case 3:
+	inputFile = fopen("inputfile","r");
+	outputFile = fopen("outputfile","r+");
+	default:
+	print("It's too damn high\n");
 
 
+       	}
     disemvowel(inputFile, outputFile);
 
     return 0; 

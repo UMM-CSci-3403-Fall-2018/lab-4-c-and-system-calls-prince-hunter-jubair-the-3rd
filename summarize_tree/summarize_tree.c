@@ -9,22 +9,42 @@
 static int num_dirs, num_regular;
 
 bool is_dir(const char* path) {
+  struct stat buf;
+  stat(path, &buf);
+  return S_ISDIR(buf.st_mode);
+ 
   /*
    * Use the stat() function (try "man 2 stat") to determine if the file
    * referenced by path is a directory or not.  Call stat, and then use
    * S_ISDIR to see if the file is a directory. Make sure you check the
    * return value from stat in case there is a problem, e.g., maybe the
    * the file doesn't actually exist.
-   */
+  */
 }
 
-/* 
+/*
  * I needed this because the multiple recursion means there's no way to
  * order them so that the definitions all precede the cause.
  */
+
 void process_path(const char*);
 
+//https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.bpxbd00/rtread.htm This site was used as a reference
 void process_directory(const char* path) {
+  num_dirs++;
+  DIR* dir = opendir(path);
+  chdir(path);
+  struct dirent *entry; 
+  while ((entry = readdir(dir)) != NULL) {
+    if (!(strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)) {
+      process_path(entry->d_name);
+   
+    }
+ 
+  }
+  chdir("..");
+  closedir(dir);
+
   /*
    * Update the number of directories seen, use opendir() to open the
    * directory, and then use readdir() to loop through the entries
@@ -42,6 +62,7 @@ void process_file(const char* path) {
   /*
    * Update the number of regular files.
    */
+   num_regular++;
 }
 
 void process_path(const char* path) {

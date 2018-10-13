@@ -35,7 +35,7 @@ bool is_dir(const char* path) {
    * return value from stat in case there is a problem, e.g., maybe the
    * the file doesn't actually exist.
   */
-}
+
 
 /*
  * I needed this because the multiple recursion means there's no way to
@@ -45,19 +45,29 @@ bool is_dir(const char* path) {
 void process_path(const char*);
 
 //https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.bpxbd00/rtread.htm This site was used as a reference
+
 void process_directory(const char* path) {
+ 
   num_dirs++;
+  
   DIR* dir = opendir(path);
+  
   chdir(path);
+  
   struct dirent *entry; 
-  while ((entry = readdir(dir)) != NULL) {
-    if (!(strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)) {
-      process_path(entry->d_name);
+  
+  while ((entry = readdir(dir))) {
+    
+      if (!(strcmp(entry->d_name, ".") != 0 || strcmp(entry->d_name, "..") != 0)) {
+         
+	 process_path(entry->d_name);
    
     }
  
   }
+  
   chdir("..");
+  
   closedir(dir);
 
   /*

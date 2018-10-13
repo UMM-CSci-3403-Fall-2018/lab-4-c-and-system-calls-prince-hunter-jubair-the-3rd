@@ -9,9 +9,24 @@
 static int num_dirs, num_regular;
 
 bool is_dir(const char* path) {
+
   struct stat buf;
-  stat(path, &buf);
-  return S_ISDIR(buf.st_mode);
+  
+  if (stat(path, & buf)== 0) {
+	  
+	  if (S_ISDIR(buf.st_mode)) {
+	  
+	     return true;
+	  
+	  }
+
+	  else return false;
+
+  }
+
+  else return false;
+
+}
  
   /*
    * Use the stat() function (try "man 2 stat") to determine if the file

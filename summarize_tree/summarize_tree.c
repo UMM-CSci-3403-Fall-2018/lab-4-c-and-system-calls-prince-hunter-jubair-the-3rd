@@ -58,7 +58,7 @@ void process_directory(const char* path) {
   
   while ((entry = readdir(dir))) {
     
-      if (!(strcmp(entry->d_name, ".") != 0 || strcmp(entry->d_name, "..") != 0)) {
+      if ((strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0)) {
          
 	 process_path(entry->d_name);
    
@@ -87,7 +87,9 @@ void process_file(const char* path) {
   /*
    * Update the number of regular files.
    */
+
    num_regular++;
+
 }
 
 void process_path(const char* path) {

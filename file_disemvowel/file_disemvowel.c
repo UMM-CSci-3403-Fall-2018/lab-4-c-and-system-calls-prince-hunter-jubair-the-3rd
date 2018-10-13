@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
 
 #define BUF_SIZE 1024
 
@@ -25,8 +24,11 @@ bool is_vowel(char c) {
      case 'U':
      case 'u':
        return true;
+       break;
+
      default:
        return false;
+       break;
      }
    }
 
@@ -53,14 +55,14 @@ void disemvowel(FILE* inputFile, FILE* outputFile) {
 	char *input_buffer = (char*) calloc(BUF_SIZE,sizeof(char));
 	char *output_buffer = (char*) calloc(BUF_SIZE,sizeof(char));
 	//reads from the input file
-	int opInputFile = fread(input_buffer, sizeof(char), BUF_SIZE, inputFile);
+	size_t opInputFile = fread(input_buffer, sizeof(char), BUF_SIZE, inputFile);
 
 
-	while(opInputFile > 0){
+	while(opInputFile != 0){
 
-    int non_vowels = copy_non_vowels(strlen(input_buffer), input_buffer, output_buffer);
-
+    int non_vowels = copy_non_vowels(opInputFile, input_buffer, output_buffer);
     fwrite(output_buffer, sizeof(char), non_vowels, outputFile);
+    opInputFile = fread(input_buffer, sizeof(char), BUF_SIZE, inputFile);
 
 }
 
@@ -78,24 +80,28 @@ int main(int argc, char *argv[]) {
 	if (argc == 1){
    	 inputFile = stdin;
    	 outputFile = stdout;
+     disemvowel(inputFile, outputFile);
 	}
     //2nd case if we want to read from a file and write to standard output.
 	else if (argc == 2){
 	inputFile = fopen(argv[1],"r");
 	outputFile = stdout;
+  disemvowel(inputFile, outputFile);
 	}
 	//3rd case if we want to read from a file and write to the next file
 	else if (argc == 3){
 	inputFile = fopen(argv[1],"r");
 	outputFile = fopen(argv[2],"w");
+  disemvowel(inputFile, outputFile);
 	}
-
-  else {
-	printf("The number of arguments is too damn high \n");
-	}
+else {
+  return 1;
+}
 
 disemvowel(inputFile, outputFile);
 
+fclose(inputFile);
+fclose(outputFile);
 
 return 0;
 }

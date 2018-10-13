@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 #define BUF_SIZE 1024
 
@@ -58,7 +61,6 @@ for (int i = 0; i < num_chars; i++) {
     if (!is_vowel(in_buf[i])){
       out_buf[j] = in_buf[i];
       num_not_vowels++;
-      j++;
     }
   }
 }
@@ -72,12 +74,16 @@ void disemvowel(FILE* inputFile, FILE* outputFile) {
      * in a buffer of data, copy the non-vowels to the output buffer, and
      * use fwrite to write that out. 
      */
-	int i, j = 0;
-	opInputFile = fopen("inputFile","r+")
-	outputFile = (inputFile*) malloc(fopen("outputFile","r+"), sizeof(inputfile));
-	for (i = 0; str[i]; i++) {
-		if (is_vowel(opInputFile) == false) {
-			outputFile[j++] = char c
+	char *input_buffer = (char*)malloc(BUF_SIZE,sizeof(char));
+	char *output_buffer = (char*)malloc(BUF_SIZE,sizeof(char));
+	//reads from the input file
+	int opInputFile = fread(input_buffer,sizeof(char),BUF_SIZE,inputFile);
+
+
+	while(opInputFile != 0){
+		int novowels = copy_non_vowels(strlen(input_buffer),input_buffer,output_buffer);
+		fwrite(output_buffer,sizeof(char),Buf_SIZE,outputFile);
+
 
 
 }
@@ -85,29 +91,30 @@ void disemvowel(FILE* inputFile, FILE* outputFile) {
 int main(int argc, char *argv[]) { 
     FILE *inputFile; 
     FILE *outputFile;
-	switch (argc) {
 
     // Code that processes the command line arguments 
     // and sets up inputFile and outputFile.
 
-    //1st case if the files don't have anything.
-	case 1:
+    //1st case if the files don't have anything. and we want to read from input and write to output.
+	if (argc == 1){
    	 inputFile = stdin;
    	 outputFile = stdout;
-	break;
-    //2nd case if the 
-	case 2:
-	inputFile = fopen("inputfile","r");
+	}
+    //2nd case if we want to read from a file and write to standard output.
+	if (argc == 2){
+	inputFile = fopen(argv[1],"r");
 	outputFile = stdout;
-	break;
-	case 3:
-	inputFile = fopen("inputfile","r");
-	outputFile = fopen("outputfile","r+");
-	default:
-	print("It's too damn high\n");
+	}
+	//3rd case if we want to read from a file and write to the next file
+	if (argc == 3){
+	inputFile = fopen(argv[1],"r");
+	outputFile = fopen(argv[2],"r+");
+	}
+	else {
+	print("The number of arguments is  too damn high\n");
+	}
 
-
-       	}
+       	
     disemvowel(inputFile, outputFile);
 
     return 0; 
